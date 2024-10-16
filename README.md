@@ -30,27 +30,27 @@ This project is a Java-based text analysis tool designed to preprocess and analy
      git clone https://github.com/your-username/TextAnalysisProject.git
      ```
 
-2. **Open the Project**:
-   - Open the project in your preferred Java IDE (e.g., IntelliJ IDEA or Eclipse) or in a text editor.
-   
-3. **Add Articles**:
-   - Add text articles (`.txt` files) to the corresponding directories: 
-     - `baseballArticle` for Baseball articles
-     - `basketballArticle` for Basketball articles
-     - `footballArticle` for Football articles
-     
+2. **Article Files**:
+   - The project already includes all necessary `.txt` article files in the repository. You can find the articles in the following directories:
+     - `baseballArticle/` contains `.txt` files for Baseball-related articles.
+     - `basketballArticle/` contains `.txt` files for Basketball-related articles.
+     - `footballArticle/` contains `.txt` files for Football-related articles.
+
+   You don't need to add or modify any article files. The articles are automatically processed when you run the program.
+
+3. **Stop Words File**:
+   - The stop words text file (`stopwords.txt`) is also included in the repository. It is located in the main branch, and the program automatically loads it for removing common stop words.
+
 4. **Run the Program**:
    - Compile and run the `Article_Processor` class, either in your IDE or using the command line:
      ```bash
      javac Article_Processor.java
      java Article_Processor
      ```
-     
+
 5. **Select a Topic**:
    - Upon running the program, you will be prompted to select a topic (Baseball, Basketball, or Football) by entering a number corresponding to the topic (1, 2, or 3).
    - The program will then process all articles in the selected directory and display statistics, filtered words, and word frequencies.
-
-
 
 
 ## Class Descriptions
@@ -65,7 +65,7 @@ This project is a Java-based text analysis tool designed to preprocess and analy
 
 ### 3. **StopWordsProcessor**:
    - This class handles the removal of stop words from the text.
-   - It loads a list of common stop words from a file and filters them out during text processing.
+   - It loads a list of common stop words from the `stopwords.txt` file and filters them out during text processing.
 
 ### 4. **TextStatistics**:
    - This class processes each article, removes stop words, calculates basic statistics (word count, sentence count), and ranks words by frequency.
@@ -79,7 +79,9 @@ The UML diagram illustrates the relationships between the main classes in this p
 ## Conclusion
 This project successfully implements a basic text analysis tool, hitting the Milestone 1 requirements by:
 - Preprocessing articles from different topics.
-- Removing stop words.
+- Removing stop words using the provided `stopwords.txt`.
 - Calculating basic statistics and ranking word frequencies.
 
 For any questions or issues with running the program, please reach out to Kristopher Marte.
+
+
