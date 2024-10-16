@@ -72,7 +72,7 @@ This project is a Java-based text analysis tool designed to preprocess and analy
    - It stores original words and filtered words separately and uses Bubble Sort to sort the words by frequency.
 
 ## UML Diagram
-![UML Diagram](UML Diagram Milestone 1.png)
+![UML Diagram](https://github.com/kmarte29/TextAnalysisProject/blob/main/UML%20Diagram%20Milestone%201.png)
 
 The UML diagram illustrates the relationships between the main classes in this project: `Article_Processor`, `FileReaderUtil`, `StopWordsProcessor`, and `TextStatistics`. Each class is responsible for a specific task in the article preprocessing workflow.
 
