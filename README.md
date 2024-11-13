@@ -83,7 +83,7 @@ This project is a Java-based text analysis tool designed to preprocess and analy
    - It provides methods to determine if a word is positive or negative based on the sentiment word lists.
 
 ## UML Diagram
-![UML Diagram](https://github.com/kmarte29/TextAnalysisProject/blob/main/UML%20Diagram%20Milestone%202.png)
+![UML Diagram](https://github.com/kmarte29/TextAnalysisProject/blob/main/UML%20Diagram%20Milestone%201.png)
 
 The UML diagram illustrates the relationships between the main classes: `Article_Processor`, `FileReaderUtil`, `StopWordsProcessor`, `TextStatistics`, and `SentimentWordsProcessor`.
 
