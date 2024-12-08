@@ -134,31 +134,65 @@ Please choose an option:
 2. Add a file to an existing folder
 3. Analyze articles in a folder
 4. Exit
-Enter your choice: 3
+Enter your choice: 1
+Enter the name of the new folder: Test1
+Folder 'Test1' created successfully.
 
+Welcome to the Text Analysis Tool!
+Please choose an option:
+1. Create a new folder
+2. Add a file to an existing folder
+3. Analyze articles in a folder
+4. Exit
+Enter your choice: 2
+Enter the name of the folder to add the file to: Test.txt
+Folder 'Test.txt' does not exist.
+
+Welcome to the Text Analysis Tool!
+Please choose an option:
+1. Create a new folder
+2. Add a file to an existing folder
+3. Analyze articles in a folder
+4. Exit
+Enter your choice: 3
 Select a topic to analyze:
 1. Baseball
 2. Basketball
 3. Football
 Enter your choice: 1
 
-Processing articles in the Baseball folder...
-
-Article 1: baseball1.txt
-Total Words (Before Removing Stop Words): 1200
-Total Words (After Removing Stop Words): 900
-Positive Count: 100
-Negative Count: 50
+Article 1: Article1a.txt
+Total Words (Before Removing Stop Words): 2320
+Total Words (After Removing Stop Words): 1358
+Positive Count: 69
+Negative Count: 54
 Overall Sentiment: Positive
-Vocabulary Richness: 0.75
+Vocabulary Richness: 729.0
 
-Article 2: baseball2.txt
-Total Words (Before Removing Stop Words): 1400
-Total Words (After Removing Stop Words): 1100
-Positive Count: 90
-Negative Count: 70
-Overall Sentiment: Neutral
-Vocabulary Richness: 0.70
+Article 2: Article1b.txt
+Total Words (Before Removing Stop Words): 1940
+Total Words (After Removing Stop Words): 1087
+Positive Count: 70
+Negative Count: 64
+Overall Sentiment: Positive
+Vocabulary Richness: 546.0
+
+Article 3: Article1c.txt
+Total Words (Before Removing Stop Words): 762
+Total Words (After Removing Stop Words): 487
+Positive Count: 28
+Negative Count: 27
+Overall Sentiment: Positive
+Vocabulary Richness: 295.0
+
+Welcome to the Text Analysis Tool!
+Please choose an option:
+1. Create a new folder
+2. Add a file to an existing folder
+3. Analyze articles in a folder
+4. Exit
+Enter your choice: 4
+Exiting the program. Goodbye!
 ```
 
 ### Class Descriptions
