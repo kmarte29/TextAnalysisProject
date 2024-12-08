@@ -223,8 +223,6 @@ Exiting the program. Goodbye!
 
 ### UML Diagram
 
-![UML Diagram](https://github.com/kmarte29/TextAnalysisProject/blob/main/UML%20Diagram%20Milestone%203.png)
-
 The UML diagram illustrates the relationships between classes:
 - `Article_Processor` (Main Class)
 - `FileReaderUtil` (File Management)
