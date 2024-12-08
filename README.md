@@ -1,4 +1,4 @@
-# Text Analysis Project - Updated Milestone 2
+# Text Analysis Project - Milestone 3
 
 ### Created by Kristopher Marte
 - **Major**: Computer Science
@@ -8,33 +8,67 @@
   - Michael Muscara
   - Philip Casey-Leonard
 
+---
+
 ## Project Overview
-This project is a Java-based text analysis tool designed to preprocess and analyze articles on a given topic. The application allows users to select a topic (Baseball, Basketball, or Football) and processes multiple articles in the corresponding directory. It removes stop words, calculates basic text statistics, ranks words by frequency, and performs sentiment analysis.
+This project is a Java-based text analysis tool designed to allow users to preprocess, analyze, and manage articles. The tool features an interactive, text-based user interface that enables folder management, article content addition, and advanced text analysis, including sentiment evaluation and vocabulary richness assessment.
 
-### Features:
-1. **Stop Words Removal**: The tool removes common stop words such as "and," "the," "is," etc.
-2. **Basic Text Statistics**: The program calculates the total number of words, number of sentences, and word frequencies.
-3. **Word Frequency Ranking**: The tool ranks and sorts words by their frequency, displaying the results in descending order.
-4. **Vocabulary Richness Analysis**: Determines the article with the richest vocabulary based on the count of unique words.
-5. **Frequent Words Filtering**: Allows the user to specify a minimum frequency threshold to display the most repeated words.
-6. **Sentiment Analysis**: Analyzes the sentiment of each article using positive and negative word lists, and provides an overall sentiment rating.
+---
 
-## How to Run the Program
+### Features
+1. **Folder Management**:
+   - Create new folders dynamically within the base directory to organize articles.
+   - Add `.txt` files to existing folders with custom content.
 
-### Prerequisites:
+2. **Article Analysis**:
+   - Analyze articles by selecting a topic (Baseball, Basketball, or Football).
+   - Provides detailed output for each article, including:
+     - Total words before and after removing stop words.
+     - Count of positive and negative words.
+     - Overall sentiment (Positive or Negative).
+     - Vocabulary richness (unique word count).
+
+3. **Sentiment Analysis**:
+   - Uses `positive-words.txt` and `negative-words.txt` to assess the sentiment of articles.
+   - Determines the overall sentiment as Positive, Negative, or Neutral based on word counts.
+
+4. **Improved User Experience**:
+   - Features a user-friendly menu-driven interface.
+   - Includes robust input validation and error handling for seamless use.
+
+---
+
+### Milestone 3 Enhancements
+1. **Folder Creation**:
+   - Users can dynamically create folders to organize articles by topics or categories.
+
+2. **File Addition**:
+   - Users can create new `.txt` files and add custom content through the program.
+
+3. **Streamlined Analysis**:
+   - Improved output for article statistics, including detailed sentiment analysis and vocabulary richness evaluation.
+
+4. **Enhanced Error Handling**:
+   - Validates user inputs for directory paths, menu options, and text entry.
+   - Notifies users of invalid actions or missing files.
+
+---
+
+### Prerequisites
 - Java Development Kit (JDK) version 8 or higher installed.
 - A text editor or IDE (e.g., IntelliJ IDEA, Eclipse, or VS Code).
 - Basic knowledge of running Java programs in the command line or IDE.
 
-### Running the Program:
-1. **Download the Code**:
-   - Clone or download the GitHub repository containing the project files.
-     ```bash
-     git clone https://github.com/your-username/TextAnalysisProject.git
-     ```
+---
 
-2. **Article Files**:
-   - The project already includes all necessary `.txt` article files in the repository. You can find the articles in the following directories:
+### Running the Program
+1. **Clone the Repository**:
+   ```bash
+   git clone https://github.com/kmarte29/TextAnalysisProject.git
+   cd TextAnalysisProject
+
+2. **Prepare the Environment**:
+   - Ensure the base directory (/Users/krismarte/Documents/CPSC2231L/articles/) exists with subfolders:
      - `baseballArticle/` contains `.txt` files for Baseball-related articles.
      - `basketballArticle/` contains `.txt` files for Basketball-related articles.
      - `footballArticle/` contains `.txt` files for Football-related articles.
@@ -52,54 +86,121 @@ This project is a Java-based text analysis tool designed to preprocess and analy
      java Article_Processor
      ```
 
-5. **Select a Topic**:
-   - Upon running the program, you will be prompted to select a topic (Baseball, Basketball, or Football) by entering a number (1, 2, or 3).
-   - The program will then process all articles in the selected directory and display statistics, filtered words, word frequencies, and sentiment analysis.
+### Menu Options
 
-6. **Specify Frequency Threshold**:
-   - You will be prompted to enter a minimum frequency threshold. The program will display words that appear at least this many times in the articles.
+1. **Create a New Folder**:
+   - Organize articles by creating a new folder in the base directory.
+   - Example Workflow:
+     - User is prompted to enter the name of the new folder.
+     - The program validates if the folder already exists.
+     - If the folder doesn’t exist, it creates the folder and notifies the user.
 
-## Class Descriptions
+2. **Add a File**:
+   - Add a `.txt` file to an existing folder and populate it with custom content.
+   - Example Workflow:
+     - User is prompted to enter the name of the folder where the file will be added.
+     - The program validates the existence of the folder.
+     - User enters the name of the new `.txt` file.
+     - The program creates the file and allows the user to input content, ending with the keyword `DONE`.
 
-### 1. **Article_Processor (Main Class)**:
-   - This is the entry point for the program. It allows the user to select a topic, specify a frequency threshold, and process all `.txt` files in the chosen directory.
-   - It handles vocabulary richness analysis and sentiment analysis for each article.
+3. **Analyze Articles**:
+   - Select a topic (Baseball, Basketball, or Football) to analyze articles within the corresponding folder.
+   - Outputs include:
+     - **Total Words**:
+       - Number of words before and after removing stop words.
+     - **Sentiment Analysis**:
+       - Positive word count.
+       - Negative word count.
+       - Overall sentiment classification (Positive/Negative/Neutral).
+     - **Vocabulary Richness**:
+       - Ratio of unique words to total words.
+   - Example Workflow:
+     - User selects a topic (e.g., Baseball).
+     - The program processes all `.txt` files in the topic's folder.
+     - For each article, statistics and analysis are displayed in a structured format.
 
-### 2. **FileReaderUtil**:
-   - This class reads all `.txt` files from the selected directory and returns a list of files for further processing.
+4. **Exit**:
+   - Exits the program gracefully.
 
-### 3. **StopWordsProcessor**:
-   - This class removes common stop words from the text using a predefined list from `stopwords.txt`.
+---
 
-### 4. **TextStatistics**:
-   - This class processes each article to calculate statistics, rank word frequencies, and perform sentiment analysis.
-   - It includes methods for:
-     - **Vocabulary Richness Analysis**: Identifying the article with the richest vocabulary.
-     - **Frequent Words Filtering**: Displaying words based on a specified frequency threshold.
-     - **Sentiment Analysis**: Analyzing positive and negative sentiment using `positive-words.txt` and `negative-words.txt`.
+### Example Output
 
-### 5. **SentimentWordsProcessor**:
-   - This inner class handles loading and checking positive and negative words.
-   - It provides methods to determine if a word is positive or negative based on the sentiment word lists.
+**Sample Analysis for Baseball Articles**:
+```text
+Welcome to the Text Analysis Tool!
+Please choose an option:
+1. Create a new folder
+2. Add a file to an existing folder
+3. Analyze articles in a folder
+4. Exit
+Enter your choice: 3
 
+Select a topic to analyze:
+1. Baseball
+2. Basketball
+3. Football
+Enter your choice: 1
+
+Processing articles in the Baseball folder...
+
+Article 1: baseball1.txt
+Total Words (Before Removing Stop Words): 1200
+Total Words (After Removing Stop Words): 900
+Positive Count: 100
+Negative Count: 50
+Overall Sentiment: Positive
+Vocabulary Richness: 0.75
+
+Article 2: baseball2.txt
+Total Words (Before Removing Stop Words): 1400
+Total Words (After Removing Stop Words): 1100
+Positive Count: 90
+Negative Count: 70
+Overall Sentiment: Neutral
+Vocabulary Richness: 0.70
+```
+
+### Class Descriptions
+
+#### 1. **Article_Processor (Main Class)**:
+   - Entry point of the program.
+   - Manages user interaction through a menu-driven interface.
+   - Handles folder creation, file addition, and article analysis.
+
+#### 2. **FileReaderUtil**:
+   - Retrieves `.txt` files from the specified folder.
+   - Ensures only valid files are included in the analysis.
+
+#### 3. **StopWordsProcessor**:
+   - Filters out common stop words using a predefined list from `stopwords.txt`.
+
+#### 4. **TextStatistics**:
+   - Processes articles to compute detailed statistics:
+     - Vocabulary Richness: Unique-to-total word ratio.
+     - Positive and Negative Word Counts: Based on predefined sentiment lists.
+     - Total Word Counts: Before and after removing stop words.
+
+#### 5. **SentimentWordsProcessor**:
+   - Loads and manages positive and negative word lists from external files.
+   - Provides methods to classify words and compute sentiment scores.
+
+---
+
+### UML Diagram
+
+![UML Diagram](https://github.com/kmarte29/TextAnalysisProject/blob/main/UML%20Diagram%20Milestone%203.png)
+
+The UML diagram illustrates the relationships between classes:
+- `Article_Processor` (Main Class)
+- `FileReaderUtil` (File Management)
+- `StopWordsProcessor` (Text Filtering)
+- `TextStatistics` (Article Analysis)
+- `SentimentWordsProcessor` (Sentiment Classification)
 ## UML Diagram
 ![UML Diagram](https://github.com/kmarte29/TextAnalysisProject/blob/main/UML%20Diagram%20Milestone%202.png)
 
 The UML diagram illustrates the relationships between the main classes: `Article_Processor`, `FileReaderUtil`, `StopWordsProcessor`, `TextStatistics`, and `SentimentWordsProcessor`.
-
-## Milestone 2 Additions
-The following enhancements were implemented as part of Milestone 2:
-1. **Vocabulary Richness Analysis**:
-   - Determines which article has the richest vocabulary by counting unique words.
-   - The article with the highest unique word count is reported as the one with the richest vocabulary.
-
-2. **Frequent Words Filtering**:
-   - The user can specify a minimum frequency threshold, and the program will display words that meet or exceed this threshold.
-
-3. **Sentiment Analysis**:
-   - The program analyzes the sentiment of each article using `positive-words.txt` and `negative-words.txt`.
-   - It counts the occurrences of positive and negative words and provides an overall sentiment rating (Positive or Negative) based on the counts.
-
 
 ## Example Output
 
@@ -116,11 +217,33 @@ Below is an example of the program's output when processing articles from one of
 > *The image above shows an example of the output generated by the program when processing a sample article.*
 
 
-## Conclusion
-This project successfully implements a comprehensive text analysis tool, meeting the requirements for Milestones 1 and 2 by:
-- Preprocessing and analyzing articles on different topics.
-- Removing stop words using `stopwords.txt`.
-- Ranking word frequencies and performing vocabulary richness analysis.
-- Analyzing sentiment using positive and negative word lists.
+---
 
-For any questions or issues with running the program, please reach out to kristopher.marte@student.fairfield.edu
+### Conclusion
+
+This project successfully achieves the objectives outlined for **Milestone 3**, introducing enhanced features and improved usability:
+
+1. **Folder and File Management**:
+   - Users can dynamically create folders for better organization of articles by topics or categories.
+   - The program allows seamless addition and editing of text files directly through the interface.
+
+2. **Comprehensive Article Analysis**:
+   - Provides detailed text statistics for articles in selected topics, including:
+     - Word counts before and after removing stop words.
+     - Sentiment analysis with positive and negative word counts.
+     - Overall sentiment classification (Positive, Negative, or Neutral).
+     - Vocabulary richness for insights into unique word usage.
+
+3. **Interactive User Experience**:
+   - The menu-driven interface ensures ease of navigation and a straightforward workflow for users.
+   - Robust error handling prevents invalid inputs and ensures smooth execution of commands.
+
+4. **Sentiment Analysis and Vocabulary Richness**:
+   - Sentiment analysis leverages predefined word lists (`positive-words.txt` and `negative-words.txt`) to determine article sentiment.
+   - Vocabulary richness provides insights into the diversity of language used in each article.
+
+---
+
+This milestone solidifies the project as a comprehensive, user-friendly text analysis tool suitable for educational and practical applications. Future developments may include additional analytical features, graphical user interface (GUI) integration, and API support for real-time data processing.
+
+For any questions, suggestions, or issues, feel free to contact **Kristopher Marte** at **kristopher.marte@student.fairfield.edu**.
