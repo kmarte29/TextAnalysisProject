@@ -1,98 +1,157 @@
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
-public class Article_Processor
-{
-    public static void main(String[] args)
-    {
-        // Directory paths for each topic (note that these are now directory paths, not individual file paths)
-        String baseballDirectory = "/Users/krismarte/Documents/CPSC2231L/articles/baseballArticle";
-        String basketballDirectory = "/Users/krismarte/Documents/CPSC2231L/articles/basketballArticle";
-        String footballDirectory = "/Users/krismarte/Documents/CPSC2231L/articles/footballArticle";
+public class Article_Processor {
+    public static void main(String[] args) {
+        // Directory paths for each topic
+        String baseDirectory = "/Users/krismarte/Documents/CPSC2231L/articles/";
+        String baseballDirectory = baseDirectory + "baseballArticle";
+        String basketballDirectory = baseDirectory + "basketballArticle";
+        String footballDirectory = baseDirectory + "footballArticle";
+
+        // Validate base directory
+        File baseDir = new File(baseDirectory);
+        if (!baseDir.exists()) {
+            System.out.println("Base directory does not exist. Please check the path.");
+            return;
+        }
 
         // Paths to positive and negative words files
         String positiveWordsFilePath = "/Users/krismarte/Documents/CPSC2231L/positive-words.txt";
         String negativeWordsFilePath = "/Users/krismarte/Documents/CPSC2231L/negative-words.txt";
 
-        // Instantiate SentimentWordsProcessor
+        // Instantiate SentimentWordsProcessor and StopWordsProcessor
         TextStatistics.SentimentWordsProcessor sentimentWordsProcessor = new TextStatistics.SentimentWordsProcessor(positiveWordsFilePath, negativeWordsFilePath);
+        StopWordsProcessor stopWordsProcessor = new StopWordsProcessor("/Users/krismarte/Documents/CPSC2231L/stopwords.txt");
 
-
-        // Create Scanner for user input
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Please choose a topic (Enter the number corresponding to the topic of the article):");
-        System.out.println("1. Baseball");
-        System.out.println("2. Basketball");
-        System.out.println("3. Football");
-        System.out.print("Enter the number corresponding to your topic: ");
+        while (true) {
+            // Display menu
+            System.out.println("\nWelcome to the Text Analysis Tool!");
+            System.out.println("Please choose an option:");
+            System.out.println("1. Create a new folder");
+            System.out.println("2. Add a file to an existing folder");
+            System.out.println("3. Analyze articles in a folder");
+            System.out.println("4. Exit");
+            System.out.print("Enter your choice: ");
 
-        String choice = scanner.next();
-        String chosenDirectory;
-
-        // Determine the directory path based on user choice
-        switch (choice) {
-            case "1":
-                chosenDirectory = baseballDirectory;
-                break;
-            case "2":
-                chosenDirectory = basketballDirectory;
-                break;
-            case "3":
-                chosenDirectory = footballDirectory;
-                break;
-            default:
-                System.out.println("Invalid choice! Please restart and choose a valid option.");
-                return;  // Exit the program if invalid choice
-        }
-
-        // Ask the user for the minimum frequency threshold
-        System.out.print("Enter the minimum frequency of words you want to see: ");
-        int frequencyThreshold = scanner.nextInt();
-
-        // Create instances of helper classes
-        String stopWordsFilePath = "/Users/krismarte/Documents/CPSC2231L/stopwords.txt";  // Stop words list
-        StopWordsProcessor stopWordsProcessor = new StopWordsProcessor(stopWordsFilePath);
-        TextStatistics textStatistics = new TextStatistics(stopWordsProcessor, sentimentWordsProcessor);
-        FileReaderUtil fileReaderUtil = new FileReaderUtil(chosenDirectory);  // To fetch all files in directory
-
-        // Get all articles in the chosen directory
-        List<File> articles = fileReaderUtil.getArticles();
-
-        // Variable to store which article has the richest vocabulary
-        File richestVocabularyArticle = null;
-        double highestRichness = 0;
-
-        // Process each article in the directory
-        for (File article : articles) {
-            System.out.println("Processing file: " + article.getName());
-
-            // Calculate vocabulary richness for each article
-            double richness = textStatistics.processArticleForUniqueWordCount(article);
-            System.out.println("Vocabulary Richness by Unique Word Count for " + article.getName() + ": " + richness);
-
-            // Compare and keep track of the article with the highest richness
-            if (richness > highestRichness) {
-                richestVocabularyArticle = article;
-                highestRichness = richness;
+            // Validate numeric input for main menu
+            int choice;
+            try {
+                choice = Integer.parseInt(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a number between 1 and 4.");
+                continue;
             }
 
-            // Process the article with the frequency threshold
-            textStatistics.processArticle(article, frequencyThreshold);
-            System.out.println();
-        }
+            switch (choice) {
+                case 1: // Create a new folder
+                    System.out.print("Enter the name of the new folder: ");
+                    String folderName = scanner.nextLine().trim();
+                    File newFolder = new File(baseDirectory + folderName);
+                    if (newFolder.mkdirs()) {
+                        System.out.println("Folder '" + folderName + "' created successfully.");
+                    } else {
+                        System.out.println("Failed to create folder. It may already exist.");
+                    }
+                    break;
 
-        // Display the article with the richest vocabulary
-        if (richestVocabularyArticle != null) {
-            System.out.println("The article with the richest vocabulary is: " + richestVocabularyArticle.getName() +
-                    " with a number of " + highestRichness + " unique words!");
-        } else {
-            System.out.println("No articles processed.");
+                case 2: // Add a file to an existing folder
+                    System.out.print("Enter the name of the folder to add the file to: ");
+                    String targetFolderName = scanner.nextLine().trim();
+                    File targetFolder = new File(baseDirectory + targetFolderName);
+                    if (targetFolder.exists() && targetFolder.isDirectory()) {
+                        System.out.print("Enter the name of the new file (with .txt extension): ");
+                        String fileName = scanner.nextLine().trim();
+                        File newFile = new File(targetFolder, fileName);
+                        try {
+                            if (newFile.createNewFile()) {
+                                System.out.println("File '" + fileName + "' created successfully in folder '" + targetFolderName + "'.");
+                                System.out.println("You can now add content to the file.");
+                                System.out.println("Enter the content (type 'DONE' on a new line to finish):");
+                                try (BufferedWriter writer = new BufferedWriter(new FileWriter(newFile))) {
+                                    String line;
+                                    while (!(line = scanner.nextLine()).equalsIgnoreCase("DONE")) {
+                                        writer.write(line);
+                                        writer.newLine();
+                                    }
+                                    System.out.println("Content written to file successfully.");
+                                }
+                            } else {
+                                System.out.println("File already exists in the folder.");
+                            }
+                        } catch (IOException e) {
+                            System.out.println("Error creating file: " + e.getMessage());
+                        }
+                    } else {
+                        System.out.println("Folder '" + targetFolderName + "' does not exist.");
+                    }
+                    break;
+
+                case 3: // Analyze articles in a folder
+                    System.out.println("Select a topic to analyze:");
+                    System.out.println("1. Baseball");
+                    System.out.println("2. Basketball");
+                    System.out.println("3. Football");
+                    System.out.print("Enter your choice: ");
+                    String topicChoice = scanner.nextLine().trim();
+                    String chosenDirectory;
+
+                    switch (topicChoice) {
+                        case "1":
+                            chosenDirectory = baseballDirectory;
+                            break;
+                        case "2":
+                            chosenDirectory = basketballDirectory;
+                            break;
+                        case "3":
+                            chosenDirectory = footballDirectory;
+                            break;
+                        default:
+                            System.out.println("Invalid choice. Returning to main menu.");
+                            continue;
+                    }
+
+                    FileReaderUtil fileReaderUtil = new FileReaderUtil(chosenDirectory);
+                    TextStatistics textStatistics = new TextStatistics(stopWordsProcessor, sentimentWordsProcessor);
+                    List<File> articles = fileReaderUtil.getArticles();
+
+                    if (articles.isEmpty()) {
+                        System.out.println("No articles found in the selected topic.");
+                    } else {
+                        int articleNumber = 1;
+                        for (File article : articles) {
+                            System.out.println("\nArticle " + articleNumber + ": " + article.getName());
+                            articleNumber++;
+
+                            // Process the article and display required data
+                            int totalWordsBefore = textStatistics.getTotalWordsBeforeStopWords(article);
+                            int totalWordsAfter = textStatistics.getTotalWordsAfterStopWords(article);
+                            int positiveCount = textStatistics.getPositiveWordCount(article);
+                            int negativeCount = textStatistics.getNegativeWordCount(article);
+                            String overallSentiment = positiveCount > negativeCount ? "Positive" : "Negative";
+                            double vocabularyRichness = textStatistics.processArticleForUniqueWordCount(article);
+
+                            System.out.println("Total Words (Before Removing Stop Words): " + totalWordsBefore);
+                            System.out.println("Total Words (After Removing Stop Words): " + totalWordsAfter);
+                            System.out.println("Positive Count: " + positiveCount);
+                            System.out.println("Negative Count: " + negativeCount);
+                            System.out.println("Overall Sentiment: " + overallSentiment);
+                            System.out.println("Vocabulary Richness: " + vocabularyRichness);
+                        }
+                    }
+                    break;
+
+                case 4: // Exit
+                    System.out.println("Exiting the program. Goodbye!");
+                    scanner.close();
+                    return;
+
+                default:
+                    System.out.println("Invalid choice. Please enter a number between 1 and 4.");
+            }
         }
-        scanner.close();  // Close the scanner
     }
 }
 
@@ -205,104 +264,65 @@ class TextStatistics {
         return 0;
     }
 
-    // Method to process an article and display words above a frequency threshold
-    public void processArticle(File file, int frequencyThreshold) {
-        List<String> wordsList = new ArrayList<>();
-        List<Integer> frequencies = new ArrayList<>();
-        int totalWordCount = 0;
-        int filteredWordCount = 0;
-        int sentenceCount = 0;
-        int positiveCount = 0; // Count positive words
-        int negativeCount = 0; // Count negative words
-
-        List<String> originalWords = new ArrayList<>();
-        List<String> filteredWords = new ArrayList<>();
-
-        // Try to read the article file
+    public int getTotalWordsBeforeStopWords(File file) {
+        int totalWords = 0;
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String line;
-
-            // Process each line in the article
             while ((line = br.readLine()) != null) {
-                String[] words = line.toLowerCase().split("\\W+");
-                totalWordCount += words.length; // Count all words, including stop words
-                sentenceCount += line.split("[.!?]").length;
-
-                for (String word : words) {
-                    if (!word.isEmpty()) {
-                        originalWords.add(word);
-
-                        if (!stopWordsProcessor.isStopWord(word)) {
-                            filteredWords.add(word);
-                            filteredWordCount++;
-
-                            // Check if the word is positive or negative
-                            if (sentimentWordsProcessor.isPositiveWord(word)) {
-                                positiveCount++;
-                            } else if (sentimentWordsProcessor.isNegativeWord(word)) {
-                                negativeCount++;
-                            }
-
-                            // Check if word already exists in wordsList
-                            if (wordsList.contains(word)) {
-                                int index = wordsList.indexOf(word);
-                                frequencies.set(index, frequencies.get(index) + 1);
-                            } else {
-                                wordsList.add(word);
-                                frequencies.add(1);
-                            }
-                        }
-                    }
-                }
+                totalWords += line.split("\\W+").length;
             }
-
-            // Print basic statistics
-            System.out.println("Total Words (before removing stop words): " + totalWordCount);
-            System.out.println("Total Words (after removing stop words): " + filteredWordCount);
-            System.out.println("Total Sentences: " + sentenceCount);
-            System.out.println("Filtered Article Words (after removing stop words): " + filteredWords);
-            System.out.println();
-
-            // Print sentiment analysis
-            System.out.println("Positive Words Count: " + positiveCount);
-            System.out.println("Negative Words Count: " + negativeCount);
-            String sentiment;
-            if (positiveCount > negativeCount) {
-                sentiment = "Positive";
-            } else {
-                sentiment = "Negative";
-            }            System.out.println("Overall Sentiment: " + sentiment);
-
-            // Sort words by frequency using Bubble Sort
-            for (int i = 0; i < frequencies.size() - 1; i++) {
-                for (int j = 0; j < frequencies.size() - i - 1; j++) {
-                    if (frequencies.get(j) < frequencies.get(j + 1)) {
-                        int tempFreq = frequencies.get(j);
-                        frequencies.set(j, frequencies.get(j + 1));
-                        frequencies.set(j + 1, tempFreq);
-
-                        String tempWord = wordsList.get(j);
-                        wordsList.set(j, wordsList.get(j + 1));
-                        wordsList.set(j + 1, tempWord);
-                    }
-                }
-            }
-
-            // Display words that meet the frequency threshold
-            System.out.println("Word Frequencies (above threshold of " + frequencyThreshold + "):");
-            for (int i = 0; i < wordsList.size(); i++)
-            {
-                if (frequencies.get(i) >= frequencyThreshold)
-                {
-                    System.out.println(wordsList.get(i) + ": " + frequencies.get(i));
-                }
-            }
-
         } catch (IOException e) {
-            System.out.println("Error reading article: " + e.getMessage());
+            System.out.println("Error reading file: " + e.getMessage());
         }
+        return totalWords;
     }
 
+    public int getTotalWordsAfterStopWords(File file) {
+        int totalWords = 0;
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                totalWords += (int) Arrays.stream(line.split("\\W+"))
+                        .filter(word -> !stopWordsProcessor.isStopWord(word))
+                        .count();
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading file: " + e.getMessage());
+        }
+        return totalWords;
+    }
+
+    public int getPositiveWordCount(File file) {
+        int count = 0;
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                count += (int) Arrays.stream(line.split("\\W+"))
+                        .filter(sentimentWordsProcessor::isPositiveWord)
+                        .count();
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading file: " + e.getMessage());
+        }
+        return count;
+    }
+
+    public int getNegativeWordCount(File file) {
+        int count = 0;
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                count += (int) Arrays.stream(line.split("\\W+"))
+                        .filter(sentimentWordsProcessor::isNegativeWord)
+                        .count();
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading file: " + e.getMessage());
+        }
+        return count;
+    }
+
+    //class 3 for processing positive/negative words
     static class SentimentWordsProcessor
     {
         private final Set<String> positiveWords;
@@ -340,4 +360,3 @@ class TextStatistics {
     }
 
 }
-
